@@ -16,12 +16,18 @@ year=$(cat "${destdir}/ep_1.html" \
 
 linkurl="http://www.channel101.com/show/${shownum}"
 
-ident="channel101-$( echo "${name}" | tr '[:upper:]' '[:lower:]' | tr -s -c '[:alnum:]' '-' )"
+ident="channel101-$(
+	echo "${name}" \
+	| tr '[:upper:]' '[:lower:]' \
+	| tr -s -c '[:alnum:]' '-' \
+	| sed -r -e 's/^[-]|[-]$//g' \
+	)"
 
-echo ia upload "${ident}" "${destdir}" \
-	--metadata="title:${name}" \
-	--metadata="description:${name} from Channel101\n${linkurl}\n\n${description}" \
+ia upload "${ident}" "${destdir}" \
+	--metadata="title:Channel 101: ${name}" \
+	--metadata="description:${name} from Channel101\nCopied from ${linkurl}\n\nDescription from the website:\n${description}" \
 	--metadata="date:${year}" \
 	--metadata="source:${linkurl}" \
+	--metadata="subject:channel101" \
 	--metadata="mediatype:movies" \
 	--metadata="collection:opensource_movies"
