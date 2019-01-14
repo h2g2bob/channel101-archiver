@@ -25,7 +25,7 @@ ident="channel101-$(
 
 ia upload "${ident}" "${destdir}" \
 	--metadata="title:Channel 101: ${name}" \
-	--metadata="description:${name} from Channel101\nCopied from ${linkurl}\n\nDescription from the website:\n${description}" \
+	--metadata=$"description:${name} from Channel101\nCopied from ${linkurl}\n\nDescription from the website:\n${description}" \
 	--metadata="date:${year}" \
 	--metadata="source:${linkurl}" \
 	--metadata="subject:channel101" \
