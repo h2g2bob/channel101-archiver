@@ -4,6 +4,12 @@ set -o errexit
 
 shownum="$1"
 destdir="data/show/${shownum}"
+sentinal="data/upload-sentinal/${shownum}"
+
+[ -e "${sentinal}" ] && {
+	echo already uploaded
+	exit 1
+}
 
 ./download_show.sh "${shownum}"
 
@@ -23,11 +29,12 @@ ident="channel101-$(
 	| sed -r -e 's/^[-]|[-]$//g' \
 	)"
 
-ia upload "${ident}" "${destdir}" \
+touch "${sentinal}"
+( cd "${destdir}" && ia upload "${ident}" "./" \
 	--metadata="title:Channel 101: ${name}" \
 	--metadata=$"description:${name} from Channel101\nCopied from ${linkurl}\n\nDescription from the website:\n${description}" \
 	--metadata="date:${year}" \
 	--metadata="source:${linkurl}" \
 	--metadata="subject:channel101" \
 	--metadata="mediatype:movies" \
-	--metadata="collection:opensource_movies"
+	--metadata="collection:opensource_movies" )
