@@ -18,7 +18,7 @@ function download() {
 	url="$2"
 	echo "Saving $url to $dest"
 	[ -s "$dest" ] || {
-		wget -O "$dest-part" "$url"
+		wget --quiet -O "$dest-part" "$url"
 		mv "$dest-part" "$dest"
 	}
 }
