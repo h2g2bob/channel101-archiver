@@ -9,7 +9,11 @@ mkdir -p "$destdir"
 function download() {
 	dest="$1"
 	url="$2"
-	[ -s "$dest" ] || wget -O "$dest" "$url"
+	echo "Saving $url to $dest"
+	[ -s "$dest" ] || {
+		wget -O "$dest-part" "$url"
+		mv "$dest-part" "$dest"
+	}
 }
 
 show_description="$destdir/show.html"
