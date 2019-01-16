@@ -30,6 +30,7 @@ ident="channel101-$(
 ( cd "${destdir}" && ia upload "${ident}" "./" \
 	--delete \
 	--metadata="title:Channel 101: ${name}" \
+	--metadata="creator:Channel101" \
 	--metadata="description:${name} from Channel101<br />Copied from ${linkurl}<br /><br />Description from the website:<br />${description}" \
 	--metadata="date:${year}" \
 	--metadata="source:${linkurl}" \
