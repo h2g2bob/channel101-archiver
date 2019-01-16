@@ -16,6 +16,10 @@ function download() {
 	}
 }
 
+function warn() {
+	echo -e "WARN: \x1b[31m$*\x1b[0m"
+}
+
 show_description="$destdir/show.html"
 download "${show_description}" "http://www.channel101.com/show/${shownum}"
 
@@ -36,7 +40,11 @@ cat "${show_description}" \
 
 	thumb_url="$( grep -h -E -o 'http://www.channel101.com/image-cache/200/113/95/images/episode/[a-z0-9]+\.jpg' "${episode_description}" | head -n 1 )"
 	episode_thumb="$destdir/ep_${episodenum}.jpg"
-	download "${episode_thumb}" "${thumb_url}"
+	if [ -z "${thumb_url}" ]; then
+		warn "No thumbnail found";
+	else
+		download "${episode_thumb}" "${thumb_url}"
+	fi
 
 	video_url="$( grep -h -E -o 'http://www.channel101.com/s/videos/[a-z0-9]+\.m4v' "${episode_description}" | head -n 1 )"
 	episode_video="$destdir/ep_${episodenum}.m4v"
