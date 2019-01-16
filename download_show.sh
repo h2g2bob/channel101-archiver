@@ -4,6 +4,13 @@ set -o errexit
 
 shownum="$1"
 destdir="data/show/${shownum}"
+sentinal="data/upload-sentinal/${shownum}"
+
+[ -e "${sentinal}" ] && {
+	echo already uploaded
+	exit 1
+}
+
 mkdir -p "$destdir"
 
 function download() {

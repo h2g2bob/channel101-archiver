@@ -11,8 +11,6 @@ sentinal="data/upload-sentinal/${shownum}"
 	exit 1
 }
 
-./download_show.sh "${shownum}"
-
 name=$(cat "${destdir}/show.html" \
 	| sed -r -n -e "s/^.*<div id='showTitle' class='metaArea'>(.*)<\/div>.*$/\1/p" )
 description=$(cat "${destdir}/show.html" \
@@ -29,12 +27,14 @@ ident="channel101-$(
 	| sed -r -e 's/^[-]|[-]$//g' \
 	)"
 
-touch "${sentinal}"
 ( cd "${destdir}" && ia upload "${ident}" "./" \
+	--delete \
 	--metadata="title:Channel 101: ${name}" \
-	--metadata=$"description:${name} from Channel101\nCopied from ${linkurl}\n\nDescription from the website:\n${description}" \
+	--metadata="description:${name} from Channel101<br />Copied from ${linkurl}<br /><br />Description from the website:<br />${description}" \
 	--metadata="date:${year}" \
 	--metadata="source:${linkurl}" \
 	--metadata="subject:channel101" \
 	--metadata="mediatype:movies" \
 	--metadata="collection:opensource_movies" )
+
+touch "${sentinal}"
