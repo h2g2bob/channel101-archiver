@@ -30,8 +30,8 @@ function warn() {
 show_description="$destdir/show.html"
 download "${show_description}" "http://www.channel101.com/show/${shownum}"
 
-main_thumb_url=$( grep -h -E -o 'http://www.channel101.com/image-cache/540/304/100/images/series/.*\.jpg' "${show_description}" | head -n 1 )
-download "${destdir}/cover.jpg" "${main_thumb_url}"
+main_thumb_url=$( grep -h -E -o 'http://www.channel101.com/image-cache/540/304/100/images/series/.*\.(jpg|png)' "${show_description}" | head -n 1 )
+download "${destdir}/cover.${main_thumb_url##*.}" "${main_thumb_url}"
 
 episodenum=$( cat "${show_description}" \
 	| grep -h -E -o '"/episode/[0-9]+"' \
@@ -46,7 +46,11 @@ cat "${show_description}" \
 	download "${episode_description}" "http://www.channel101.com/episode/${episodecode}"
 
 	thumb_url="$( grep -h -E -o 'http://www.channel101.com/image-cache/200/113/95/images/episode/[a-z0-9]+\.jpg' "${episode_description}" | head -n 1 )"
-	episode_thumb="$destdir/ep_${episodenum}.jpg"
+	if [ -z "${thumb_url}" ]; then
+		thumb_url="$( grep -h -E -o 'http://www.channel101.com/image-cache/640/360/100/images/episode/[a-z0-9]+\.png' "${episode_description}" | head -n 1 )"
+	fi
+
+	episode_thumb="$destdir/ep_${episodenum}.${thumb_url##*.}"
 	if [ -z "${thumb_url}" ]; then
 		warn "No thumbnail found";
 	else
