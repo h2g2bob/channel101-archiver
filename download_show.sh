@@ -2,17 +2,6 @@
 set -o nounset
 set -o errexit
 
-shownum="$1"
-destdir="data/show/${shownum}"
-sentinal="data/upload-sentinal/${shownum}"
-
-[ -e "${sentinal}" ] && {
-	echo already uploaded
-	exit 1
-}
-
-mkdir -p "$destdir"
-
 function download() {
 	dest="$1"
 	url="$2"
@@ -26,6 +15,22 @@ function download() {
 function warn() {
 	echo -e "WARN: \x1b[31m$*\x1b[0m"
 }
+
+shownum="$1"
+destdir="data/show/${shownum}"
+sentinal="data/upload-sentinal/${shownum}"
+
+[ -e "${sentinal}" ] && {
+	echo already uploaded
+	exit 1
+}
+
+if [ -e "blacklist/${shownum}_all" ]; then
+	warn "Skipping show because blacklist/${shownum}_all"
+	exit 1
+fi
+
+mkdir -p "$destdir"
 
 show_description="$destdir/show.html"
 download "${show_description}" "http://www.channel101.com/show/${shownum}"
@@ -57,9 +62,13 @@ cat "${show_description}" \
 		download "${episode_thumb}" "${thumb_url}"
 	fi
 
-	video_url="$( grep -h -E -o 'http://www.channel101.com/s/videos/[a-z0-9]+\.m4v' "${episode_description}" | head -n 1 )"
-	episode_video="$destdir/ep_${episodenum}.m4v"
-	download "${episode_video}" "${video_url}"
+	if [ -e "blacklist/${shownum}_${episodenum}" ]; then
+		warn "Skipping video because blacklist/${shownum}_${episodenum}"
+	else
+		video_url="$( grep -h -E -o 'http://www.channel101.com/s/videos/[a-z0-9]+\.(m4v|mp4)' "${episode_description}" | head -n 1 )"
+		episode_video="$destdir/ep_${episodenum}.${video_url##*.}"
+		download "${episode_video}" "${video_url}"
+	fi
 
 	episodenum=$(( ${episodenum} - 1 ))
 done
