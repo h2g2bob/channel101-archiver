@@ -30,7 +30,7 @@ function warn() {
 show_description="$destdir/show.html"
 download "${show_description}" "http://www.channel101.com/show/${shownum}"
 
-main_thumb_url=$( grep -h -E -o 'http://www.channel101.com/image-cache/540/304/100/images/series/.*\.(jpg|png)' "${show_description}" | head -n 1 )
+main_thumb_url=$( grep -h -E -o 'http://www.channel101.com/image-cache/540/304/100/images/series/.*\.(jpg|jpeg|png)' "${show_description}" | head -n 1 )
 download "${destdir}/cover.${main_thumb_url##*.}" "${main_thumb_url}"
 
 episodenum=$( cat "${show_description}" \
