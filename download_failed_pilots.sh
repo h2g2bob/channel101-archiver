@@ -36,7 +36,8 @@ grep -hEo '"/episode/[0-9]+"' data/screenings/*.html \
 
 	if grep -F "<div id='status' class='badge'>Failed Pilot</div>" "${htmlfile}" > /dev/null; then
 		date=$( cat "${htmlfile}" | sed -nre "s/^.*<span id='episodeScreening'.*>([A-Za-z]+ [0-9]+, [0-9]{4})<\/a><\/span>$/\1/p" )
-		if [ "${date##* }" = "${year}" ]; then
+		if [ "${date##* }" = "${year}" ] \
+		&& ! [ -e "blacklist/pilot_${num}" ]; then
 
 			echo "$year: $htmlfile"
 
