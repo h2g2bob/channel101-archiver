@@ -50,6 +50,10 @@ cat "${show_description}" \
 	episode_description="${destdir}/ep_${episodenum}.html"
 	download "${episode_description}" "http://www.channel101.com/episode/${episodecode}"
 
+	if grep -F "<div id='status' class='badge'>Failed Pilot</div>" "${htmlfile}" > /dev/null; then
+		exit 1
+	fi
+
 	thumb_url="$( grep -h -E -o 'http://www.channel101.com/image-cache/200/113/95/images/episode/[a-z0-9]+\.jpg' "${episode_description}" | head -n 1 )"
 	if [ -z "${thumb_url}" ]; then
 		thumb_url="$( grep -h -E -o 'http://www.channel101.com/image-cache/640/360/100/images/episode/[a-z0-9]+\.png' "${episode_description}" | head -n 1 )"
