@@ -29,6 +29,7 @@ mkdir -p "${collectiondir}"
 
 grep -hEo '"/episode/[0-9]+"' data/screenings/*.html \
 | grep -E -o '[0-9]+' \
+| uniq \
 | while read num; do
 	htmlfile="${htmldir}/${num}.html"
 	linkurl="http://www.channel101.com/episode/${num}"
