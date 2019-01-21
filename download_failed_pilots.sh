@@ -61,9 +61,12 @@ grep -hEo '"/episode/[0-9]+"' data/screenings/*.html \
 			[ -z "${ident}" ] && exit 1
 
 			description="$( cat "${htmlfile}" \
+				| tr '\n' ' ' \
 				| sed -r -n -e 's/^.*<meta name="description" content="([^"]+)".*$/\1/p' \
 				)"
-			[ -z "${description}" ] && exit 1
+			if [ -z "${description}" ]; then
+				warn "No description"
+			fi
 
 			echo "${year} ${date} ${ident} ${videourl}"
 			cp "${htmlfile}" "${collectiondir}/${ident}.html"
