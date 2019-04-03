@@ -1,4 +1,23 @@
-Hacky scripts for archiving all the videos from channel101.com
+This is a set of hacky scripts for archiving all the videos from channel101.com
+
+# Why
+
+[Channel101](http://www.channel101.com/) is a monthly film festival, featuring
+a selection of 5 minute films. The films are of variable qualiry: some are
+[great](http://www.channel101.com/show/96), others
+[not so much](http://www.channel101.com/show/166) and some in
+[questionable taste](http://www.channel101.com/show/214).
+
+So why bother to back it up? Well, it's culturally important: it's where _SNL_
+writing trio _The Lonely Island_ started; and where _Adult Swim_ show
+_Rick and Morty_ began.
+
+I suspect it's also run (and funded) by a small number of busy people. What
+would happen if the server exploded, or the wrong person left, or if
+[someone tried to sue](https://en.wikipedia.org/wiki/House_of_Cosbys)? The
+community would probably survive, but the history might be lost.
+
+# How
 
 Get a list of screenings:
 
@@ -21,6 +40,8 @@ Uploading videos:
 ```
 
 If something goes wrong, you can safely run the script again.
+
+The scripts are written very poorly, on the expectation they'll only get run once.
 
 # What's on the website?
 
